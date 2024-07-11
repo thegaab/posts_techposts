@@ -3,9 +3,24 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostModule } from './post/post.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PostModule, MongooseModule.forRoot('mongodb://localhost/techpost')],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    PostModule,
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: '10m',
+      },
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
