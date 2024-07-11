@@ -3,5 +3,5 @@ export interface IPost {
   name: string;
   content: string;
   image_url: string;
-  relationalId: number;
+  relationalId: string;
 }

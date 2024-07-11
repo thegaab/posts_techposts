@@ -7,9 +7,25 @@ import {
   Post,
   Put,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { PostService } from '../services/post.service';
-import { IPost } from '../schemas/models/post.interface';
+import { z } from 'zod';
+import { ZodValidationPipe } from 'src/shared/pipe/zod-validation.pipe';
+
+const createPostSchema = z.object({
+  name: z.string(),
+  content: z.string(),
+  image_url: z.string(),
+  relationalId: z.string(),
+});
+
+const updatePostSchema = z.object({
+  content: z.string(),
+});
+
+type CreatePost = z.infer<typeof createPostSchema>;
+type UpdatePost = z.infer<typeof updatePostSchema>;
 
 @Controller('post')
 export class PostController {
@@ -24,15 +40,23 @@ export class PostController {
     return this.postService.getPost(postId);
   }
 
+  @UsePipes(new ZodValidationPipe(createPostSchema))
   @Post()
-  async createPost(@Body() post: IPost) {
-    return this.postService.createPost(post);
+  async createPost(
+    @Body() { name, content, image_url, relationalId }: CreatePost,
+  ) {
+    return this.postService.createPost({
+      name,
+      content,
+      image_url,
+      relationalId,
+    });
   }
 
   @Put(':postId')
   async updatePost(
     @Param('postId') postId: string,
-    @Body('content') content: string,
+    @Body(new ZodValidationPipe(updatePostSchema)) { content }: UpdatePost,
   ) {
     return this.postService.updatePost(postId, content);
   }

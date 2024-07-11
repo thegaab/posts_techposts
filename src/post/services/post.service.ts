@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostRepository } from '../repositories/post.repository';
 import { IPost } from '../schemas/models/post.interface';
 
@@ -11,7 +11,9 @@ export class PostService {
   }
 
   async getPost(productId: string) {
-    return this.postRepository.getPost(productId);
+    const post = await this.postRepository.getPost(productId);
+    if (!post) throw new NotFoundException('Post not found');
+    return post;
   }
 
   async createPost(post: IPost) {

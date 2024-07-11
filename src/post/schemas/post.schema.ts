@@ -15,7 +15,7 @@ export class Post implements IPost {
   @Prop()
   image_url: string;
   @Prop()
-  relationalId: number;
+  relationalId: string;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
