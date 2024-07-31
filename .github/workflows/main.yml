@@ -20,6 +20,6 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t $DOCKER_USERNAME/petech-stock:latest --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} .
-          docker push $DOCKER_USERNAME/petech-stock:latest
+          docker build -t $DOCKER_USERNAME/pettech:latest --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} .
+          docker push $DOCKER_USERNAME/pettech:latest
  

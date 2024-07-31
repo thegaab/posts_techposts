@@ -21,6 +21,30 @@ RUN npm install
 
 COPY . .
 
+
+
+ARG MONGO_URI
+
+
+
+ARG JWT_SECRET
+
+
+
+ENV MONGO_URI=$MONGO_URI
+
+
+
+ENV JWT_SECRET=$JWT_SECRET
+
+
+
+RUN echo "MONGO_URI=${MONGO_URI}" > .env
+
+
+
+RUN echo "JWT_SECRET=${JWT_SECRET}" > .env
+
   
 
 RUN npm install -g pnpm
@@ -35,7 +59,7 @@ RUN pnpm build
 
 # Expõe a porta utilizada pelo seu aplicativo Nest.js (por padrão, é a porta 3000)
 
-EXPOSE 3010
+EXPOSE 3000
 
   
 
